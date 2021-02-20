@@ -77,10 +77,13 @@ R プロジェクトのひな形
 
 ### Git の操作
 
+バージョン管理
+
 - Git でソースコードの変更履歴を管理する.
 - RStudio Server の "Git" タブを使っても, "Terminal" タブからコマンドで操作しても良い.
 - Docker ホストにインストールされた Git や GUI ツールを使用しても良い.
 
+グローバル設定の管理
 
 - RStudio Server の "Terminal" タブから `git config --global` コマンドで設定を変更すると dotfiles の `.gitconfig` ファイルが書き換えられる.
 - dotfiles リポジトリは Docker ホスト（コンテナの外）に保存されているので, コンテナを一度停止して再起動したときや他のプロジェクトで別のコンテナを起動したときにも同じ設定が反映される.

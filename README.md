@@ -34,7 +34,7 @@ R プロジェクトのひな形
 ### マシンごとの初期設定
 
 - dotfiles
-    - GitHub 上の dotfiles リポジトリ（例: `username/rproject-dotfiles`）をローカル環境の適当な場所（例: `~/.ghq/github.com/username/rproject-dotfiles`）にクローンする.
+    - GitHub 上の dotfiles リポジトリ（例: `username/rproject-dotfiles`）をローカル環境の適当な場所（例: `~/ghq/github.com/username/rproject-dotfiles`）にクローンする.
 - renv
     - renv パッケージキャッシュとなるディレクトリを作成する. 例えば macOS なら `~/Library/Application Support/renv/cache` が標準的なディレクトリパスとなる.
 - GitHub への SSH 接続
@@ -48,7 +48,7 @@ R プロジェクトのひな形
 
 ### プロジェクト × マシンごとの初期設定
 
-- プロジェクトの GitHub リポジトリ（例: `your-org/your-rproject`）をローカル環境の適当な場所（例: `~/.ghq/github.com/your-team/your-rproject`）にクローンする.
+- プロジェクトの GitHub リポジトリ（例: `your-org/your-rproject`）をローカル環境の適当な場所（例: `~/ghq/github.com/your-team/your-rproject`）にクローンする.
 - [`.env.example`](./.env.example) ファイルをコピーして `.env` ファイルを作成する.
 - `.env` ファイルを編集して下記の項目を設定する
 
@@ -56,7 +56,7 @@ R プロジェクトのひな形
 |:----------|:----------|:----------|
 | `PROJECT_MOUNT_PATH`  | プロジェクトのマウント先ディレクトリパス | `/home/rstudio/your-rproject` |
 | `IMAGE_NAME`          | Docker コンテナのイメージ名 | `your-repo/your-rproject-rstudio:4.0.3` |
-| `DOTFILES_ROOT`       | dotfiles のディレクトリパス | `~/.ghq/github.com/username/rproject-dotfiles` |
+| `DOTFILES_ROOT`       | dotfiles のディレクトリパス | `~/ghq/github.com/username/rproject-dotfiles` |
 | `RENV_PATHS_CACHE`    | renv パッケージキャッシュのディレクトリパス | `~/Library/Application Support/renv/cache` |
 | `GITHUB_SSH_IDENTITY` | SSH 秘密鍵のファイルパス | `~/.ssh/id_ed25519` |
 

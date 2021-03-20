@@ -8,6 +8,7 @@ RUN apt-get update \
     ssh \
     libxt-dev \
     libxml2-dev \
+    libgit2-dev \
     fonts-ipaexfont \
   && apt-get clean \
   && mkdir -p /home/rstudio/.local/share/renv/cache \

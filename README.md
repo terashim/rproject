@@ -74,7 +74,7 @@ Git/GitHub、Docker、RStudio、renv を利用した R プロジェクトのひ�
 
 ### renv によるパッケージ管理
 
-- renv によってプロジェクト固有のライブラリ（プライベートライブラリ）が [`./renv/`](./renv/) ディレクトリ内に作成される.
+- renv によってプロジェクト固有のライブラリ（プライベートライブラリ）が [`renv/`](./renv/) ディレクトリ内に作成される.
 - 新しいパッケージをライブラリにインストールするときは `renv::install()` 関数を使用する.
 - ライブラリの状態を記録するには `renv::snapshot()` 関数を使用する。このとき、ライブラリにインストールされたパッケージとそのバージョン情報が [`renv.lock`](./renv.lock) ファイルに記録される。この内容を GitHub にプッシュし、チームメンバー間で共有することで同じライブラリの状態が再現される。
 - `renv::restore()` 関数を使用すると、`renv.lock` ファイルに記録された情報からライブラリの状態を復元することができる.
@@ -91,7 +91,7 @@ R セッションで使用する環境変数をファイルで管理したい場
 
 ### renv パッケージキャッシュのプロジェクト間共有
 
-デフォルトでは [renv のパッケージキャッシュ](https://rstudio.github.io/renv/articles/renv.html#cache-1) が [`./dev/renv/cache/`](./dev/renv/cache) に作成される。
+デフォルトでは [renv のパッケージキャッシュ](https://rstudio.github.io/renv/articles/renv.html#cache-1) が [`dev/renv/cache/`](./dev/renv/cache) に作成される。
 しかしこのパッケージキャッシュはプロジェクト固有で使用されるため、保存されたパッケージファイルが別のプロジェクトでは再利用されない。
 
 ダウンロードしたパッケージを他のプロジェクトで再利用するためには、プロジェクト間で共通の renv パッケージキャッシュディレクトリをマシン上に１つ作成する。例えば macOS なら `~/Library/Application Support/renv/cache` が標準的なディレクトリパスとなる。
@@ -106,10 +106,10 @@ RENV_PATHS_CACHE_HOST="~/Library/Application Support/renv/cache"
 
 ### 共通 dotfiles によるプロジェクト間での設定共有
 
-デフォルトでは RStudio や Git のグローバル設定が [`./dev/dotfiles/`](./dev/dotfiles) フォルダ内の `.config/rstudio/rstudio-prefs.json` や `.gitconfig` などのファイルに保存される。
+デフォルトでは RStudio や Git のグローバル設定が [`dev/dotfiles/`](./dev/dotfiles) フォルダ内の `.config/rstudio/rstudio-prefs.json` や `.gitconfig` などのファイルに保存される。
 しかしこのフォルダはプロジェクト固有で使用されるため、別のプロジェクトには設定内容が反映されない。
 
-設定内容を複数のプロジェクト間で共有したい場合は、プロジェクト固有の [`./dev/dotfiles/`](./dev/dotfiles) の代わりにプロジェクト間で共通の dotfiles ディレクトリ（例: `~/rproject-dotfiles` ）をマシン上に１つ作成する。
+設定内容を複数のプロジェクト間で共有したい場合は、プロジェクト固有の [`dev/dotfiles/`](./dev/dotfiles) の代わりにプロジェクト間で共通の dotfiles ディレクトリ（例: `~/rproject-dotfiles` ）をマシン上に１つ作成する。
 共通 dotfiles ディレクトリを作成したら、そのパスを `.env` ファイル内の環境変数 `DOTFILES_ROOT` で指定する。
 
 例：

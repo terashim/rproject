@@ -1,2 +1,1 @@
-try({renv::load();renv::restore(prompt = FALSE)})
-source("renv/activate.R")
+tryCatch({ renv::load(); renv::restore(prompt = FALSE); }, error = function(e) { source("renv/activate.R") })

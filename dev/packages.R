@@ -15,7 +15,7 @@ renv::restore()
 
 # (1) パッケージをインストール
 packages <- c(
-  "palmerpenguin",
+  "palmerpenguin"
 )
 renv::install(packages)
 

@@ -3,9 +3,6 @@ FROM rocker/rstudio:4.1.0
 ENV RENV_VERSION 0.14.0
 
 # 各種 apt パッケージと日本語フォント（IPAexフォント）をインストール
-# renv のパッケージキャッシュおよびライブラリルート用フォルダを作成
-# SSH の known_hosts に github.com を追加
-# remots パッケージをインストール
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     ssh \

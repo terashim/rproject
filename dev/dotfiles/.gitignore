@@ -1,4 +1,0 @@
-/.gitconfig
-/.gitignore_global
-/.config/rstudio/*
-!/.config/rstudio/.gitkeep

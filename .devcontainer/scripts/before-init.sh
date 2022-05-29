@@ -2,12 +2,12 @@
 
 set -eux
 
+SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-/dev/null}
 if [ -S $SSH_AUTH_SOCK ]; then
     chmod go+w $SSH_AUTH_SOCK
 fi
 
-DOTFILES_DIR_CONTAINER=${DOTFILES_DIR_CONTAINER:-/home/rstudio/.dotfiles}
-DOTFILES_INSTALL_SCRIPT=${DOTFILES_INSTALL_SCRIPT:-$DOTFILES_DIR_CONTAINER/install.sh}
-if [ -f $DOTFILES_INSTALL_SCRIPT ]; then
-    su -c "bash $DOTFILES_INSTALL_SCRIPT" rstudio
+DOTFILES_INSTALL_COMMAND=${DOTFILES_INSTALL_COMMAND:-"bash /mnt/dotfiles/install.sh"}
+if [ -n "$DOTFILES_INSTALL_COMMAND" ]; then
+    su -c "$DOTFILES_INSTALL_COMMAND" rstudio
 fi

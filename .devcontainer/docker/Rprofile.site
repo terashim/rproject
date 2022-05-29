@@ -1,0 +1,5 @@
+options("renv.config.autoloader.enabled" = FALSE)
+if (file.exists(renv::paths$library()) || file.exists(renv::paths$lockfile())) {
+  renv::load()
+  renv::restore(prompt = FALSE)
+}

@@ -1,5 +1,5 @@
 {
-    "dockerComposeFile": ["./docker-compose.yml"],
+    "dockerComposeFile": ["./compose.yml"],
     "workspaceFolder": "/home/rstudio",
     "service": "rstudio",
     "shutdownAction": "stopCompose",

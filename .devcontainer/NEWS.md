@@ -1,3 +1,10 @@
+# 2022/05/29
+
+- renv のバージョンを 0.15.5 に修正
+- README を修正
+- docker-compose.yml を compose.yml に変更
+- .env.example のコメントを修正
+- コンテナにインストール済みの renv でプロジェクトをロードするよう修正
 
 # 2022/05/03
 

@@ -1,0 +1,19 @@
+services:
+  rstudio:
+    build:
+      context: ./docker
+    ports:
+      - "8787:8787"
+    environment:
+      - PASSWORD=password
+      - DISABLE_AUTH=true
+      - RENV_PATHS_CACHE=${RENV_PATHS_CACHE_CONTAINER:-/home/rstudio/.local/share/renv/cache}
+      - SSH_AUTH_SOCK=${SSH_AUTH_SOCK_CONTAINER:-/run/host-services/ssh-auth.sock}
+      - DOTFILES_INSTALL_COMMAND=${DOTFILES_INSTALL_COMMAND:-bash /mnt/dotfiles/install.sh}
+    volumes:
+      - ./scripts:/mnt/scripts
+      - ${LOCAL_WORKSPACE_FOLDER:-..}:${CONTAINER_WORKSPACE_FOLDER:-/home/rstudio/project}
+      - ${RENV_PATHS_CACHE_HOST:-./data/renv/cache}:${RENV_PATHS_CACHE_CONTAINER:-/home/rstudio/.local/share/renv/cache}
+      - ${DOTFILES_DIR_HOST:-./dotfiles}:${DOTFILES_DIR_CONTAINER:-/mnt/dotfiles}
+      - ${SSH_AUTH_SOCK_HOST:-/dev/null}:${SSH_AUTH_SOCK_CONTAINER:-/run/host-services/ssh-auth.sock}
+    command: ["sh", "-c", "bash /mnt/scripts/before-init.sh && /init"]

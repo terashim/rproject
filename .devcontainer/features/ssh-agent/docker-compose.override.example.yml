@@ -1,0 +1,11 @@
+# An example docker-compose.override.yml file to enable SSH Agent feature
+services:
+  rstudio:
+    environment:
+      # tell OpenSSH the SSH Agent socket path in the container
+      - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
+    volumes:
+      # 1. mount SSH Agent socket (Docker Desktop for Mac)
+      - /run/host-services/ssh-auth.sock:/run/host-services/ssh-auth.sock
+      # 2. mount the init script
+      - ./.devcontainer/features/ssh-agent/init.d/ssh-agent.sh:/etc/cont-init.d/ssh-agent.sh

@@ -1,0 +1,1 @@
+try({ renv::load(); renv::restore(prompt = FALSE) }, silent = TRUE)

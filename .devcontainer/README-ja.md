@@ -1,163 +1,70 @@
-R プロジェクト用の Docker 開発環境設定
-==================================================
-
-## 特長
-
-- Git と GitHub
-- Docker と Docker Compose
-- RStudio Server
-- renv
-- dotfiles
-- Visual Studio Code Remote - Containers
+# Rプロジェクト用のDocker環境
 
 ## 使い方
 
-### プロジェクトの作成
+### 前提条件
 
-GitHub でこのテンプレートリポジトリ [`terashim/rproject`](https://github.com/terashim/rproject) から新しいリポジトリ（例: `your-org/your-rproject`）を作成する。または、単にこの `.devcontainer` フォルダを既存のプロジェクトにコピーする。
+- [Git](https://git-scm.com/)
+- [Docker](https://www.docker.com/)
+- [Visual Studio Code](https://code.visualstudio.com/) および [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 拡張機能
 
-### ローカルマシンのセットアップ
+### プロジェクトのセットアップ
 
-- Docker をインストールする
-- SSH をインストールする
-- Git をインストールする
-- GitHub の SSH 鍵認証の準備を行う
-- SSH Agent を有効化し、鍵を追加する
-- VS Code と Remote - Container 拡張をインストールする
-- プロジェクトのリポジトリ（例: `your-org/your-rproject`）をローカルマシン上にクローンする（例: `~/ghq/github.com/your-org/your-rproject`）。
+1. このリポジトリをクローンする。
+2. [`.env.example`](../.env.example) をこのプロジェクトのルートディレクトリの `.env` にコピーする。
+3. Dockerホストマシン上にrenvのグローバルキャッシュディレクトリ（例: `~/.local/share/renv/cache`）を作成する。
+4. Edit `.env` file to set the environment variable `RENV_PATHS_CACHE_HOST` to the renv global cache path.
 
-## ワークフロー
+### 起動と終了
 
-### コンテナの起動と終了
+- このプロジェクトを [VS Code Dev Containers](https://code.visualstudio.com/docs/remote/containers) で開くとコンテナが起動する。
+- ブラウザで <http://localhost:8787> を開き、RStudio Serverにアクセスする。
+- VS Code のウィンドウを閉じるとコンテナが停止する。
 
-ローカルマシン上で Docker デーモンが起動しているものとする。
+VS Code の代わりに
+[`docker compose up`](https://docs.docker.com/engine/reference/commandline/compose_up/)
+や
+[`down`](https://docs.docker.com/engine/reference/commandline/compose_down/)
+コマンドでコンテナを起動や終了することもできる。
 
-1. VS Code でローカルリポジトリを開く。
-2. ショートカットキー Ctrl/Cmd+Shift+P でコマンドパレットを開き、"Reopen folder in container" を選んで RStudio Server のコンテナを起動する。
-3. ブラウザで <http://localhost:8787> を開き、RStudio Server に接続する。
-4. RStudio Server 上で分析や開発の作業を行う。
-5. コンテナを停止するには、VS Code のウィンドウを閉じる。
+## 機能
 
-### Git によるバージョン管理
+### renv
 
-- Git でソースコードのバージョン管理を行う。
-- Docker ホストにインストールされた Git を使っても良い。
-- コンテナにインストールされた Git を RStudio や VS Code から使っても良い。
-- GitHub でチームにコードを共有する。
+このプロジェクトではパッケージ管理に[renv](https://rstudio.github.io/renv/index.html)を使用する。["スナップショットタイプ"](https://rstudio.github.io/renv/reference/snapshot.html#snapshot-type) はデフォルトで "explicit" に設定されている。
+このモードでは、以下のようにしてパッケージを管理する：
 
-### renv によるパッケージ管理
+- [`DESCRIPTION`](../DESCRIPTION) ファイルを編集して、このプロジェクトの依存関係（使用するパッケージ）を宣言する。
+- [`renv::install()`](https://rstudio.github.io/renv/reference/install.html) を呼び出してそれらのパッケージをインストールする。
+- [`renv::snapshot()`](https://rstudio.github.io/renv/reference/snapshot.html) を呼び出して [`renv.lock`](../renv.lock) ファイルを更新することにより、インストールされたパッケージを記録する。
+- [`renv::restore()`](https://rstudio.github.io/renv/reference/restore.html) を呼び出すことで [`renv.lock`](../renv.lock) からパッケージを復元する。
 
-- 設定ファイル [`renv/settings.dcf`](../renv/settings.dcf) により、このプロジェクトでは ["explicit" なスナップショットタイプ](https://rstudio.github.io/renv/articles/renv.html#explicit-snapshots) がデフォルトになっている。
-- このプロジェクトで新しいパッケージを使うには、まずそれを [`DESCRIPTION`](../DESCRIPTION) ファイルに書き込んでから `renv::install()` と `renv::snapshot()` を実行する。
-- `renv::snapshot()` で生成された [`renv.lock`](../renv.lock) ファイルを GitHub にプッシュすることによってチームに共有し、同じパッケージのバージョンが再現されるようにする。
+必要なら [`renv/settings.dcf`](../renv/settings.dcf) を編集してスナップショットタイプを変更することもできる。スナップショットタイプについてより詳しくは
+<https://rstudio.github.io/renv/reference/snapshot.html#snapshot-type>
+を参照のこと。
 
-## 設定
+### dotfiles
 
-### .env ファイルによるカスタマイズ
+**dotfiles**を使えばコンテナが削除された後もRStudioのグローバルオプション設定を残すことができる。
 
-[`.env.example`](./.env.example) を `.env` ファイルにコピーして、それを編集することにより
-[`compose.yml`](./compose.yml.) で使われる環境変数を変更する。
-この `.env` ファイルは Git で追跡されないので、他の環境に影響を与えることなくローカル環境の設定を行うことができる。
+このプロジェクトでdotfilesの利用を始めるには、
+[`.devcontainer/features/dotfiles/docker-compose.override.example.yml`](./features/dotfiles/docker-compose.override.example.yml)
+をコピーしてプロジェクトのルートディレクトリに `docker-compose.override.yml` として保存する。これによってRStudioの設定が
+`.devcontainer/features/dotfiles/dotfiles/.config/rstudio`
+ディレクトリに保存され、コンテナが削除されても残るようになる。
 
-### renv パッケージキャッシュ
+マシン上にグローバルなdotfilesディレクトリを作成し、他のプロジェクトと共有することもできる。その場合は、`docker-compose.override.yml` ファイルを編集してdotfilesのパスを変更する。
 
-デフォルトでは、ダウンロードされたパッケージがマウントされたディレクトリ [`./data/renv/cache`](./data/renv/cache) にキャッシュされる。このキャッシュディレクトリはこのプロジェクトに固有で、他のプロジェクトとは共有されない。
+VS Codeの設定で、GitHub上にあるリモートのdotfilesリポジトリを指定することもできる。これについてより詳しくは <https://code.visualstudio.com/docs/remote/containers#_personalizing-with-dotfile-repositories> を参照のこと。
 
-キャッシュされたパッケージが他のプロジェクトでも再利用できるようにするため、マシン上に１つのグローバルなパッケージキャッシュを使うことが推奨されている。
-例えば、macOS の場合は `~/Library/Application Support/renv/cache` が標準的なパスとなる。
-このグローバルキャッシュのパスを指定するには、`.env` ファイルで例えば
+### SSH agent
 
-```
-RENV_PATHS_CACHE_HOST="~/Library/Application Support/renv/cache"
-```
+例えばGitHubに接続したいときなど、コンテナ内でSSHを使いたい場合も考えられる。
+そのような場合、[SSH agent](https://www.ssh.com/ssh/agent)を使えばDockerホストに保存されたSSH鍵をフォワーディングすることができる。
+DockerホストでSSH agentを起動した状態になっていれば、VS Code Devcontainerで自動的にフォワーディングされる。詳細については <https://code.visualstudio.com/docs/remote/containers#_using-ssh-keys> を参照のこと。
 
-のようにして変数 `RENV_PATHS_CACHE_HOST` を設定する。
-
-詳しくは <https://rstudio.github.io/renv/articles/renv.html#cache> を参照のこと。
-
-### RStudio と Git のグローバル設定
-
-RStudio の設定は "Tools" > "Global Options" の画面で通常通り変更できる。
-デフォルトではその変更内容が [`./dotfiles/.config/rstudio/`](./dotfiles/.config/rstudio/) フォルダにある設定ファイルに保存される。
-
-また、コンテナ内で `git config --global` コマンドを使って Git グローバル設定を行うと、デフォルトではそれが [`./dotfiles/.config/git/`](./dotfiles/.config/git/) フォルダ内の設定ファイルに保存される。
-
-これらの設定ファイルはこのプロジェクトに固有である。他のプロジェクトとも設定を同期したい場合は **dotfiles** を使う。
-
-### VS Code による dotfiles の設定
-
-VS Code のユーザー設定で、自分の dotfiles の GitHub リポジトリを指定することができる。
-詳しくは <https://code.visualstudio.com/docs/remote/containers#_personalizing-with-dotfile-repositories> を参照のこと。
-
-この設定を利用する場合は、衝突を避けるためデフォルトの dotfiles のマウントを無効化する。
-これには `.env` ファイルに以下の行を加える:
-
-```
-DOTFILES_DIR_HOST=/dev/null
-DOTFILES_INSTALL_COMMAND=":"
-```
-
-### dotfiles のマウント
-
-Docker ホスト上にある共通 dotfiles ディレクトリ（例: `~/dotfiles`）をコンテナにマウントすることもできる。
-その場合は例えば次のように `.env` ファイルを編集して、Docker ホスト上のディレクトリパスとコンテナへのマウント先パス、およびインストール用コマンドを指定する。
-
-```
-DOTFILES_DIR_HOST=~/dotfiles
-DOTFILES_DIR_CONTAINER=/home/rstudio/dotfiles
-DOTFILES_INSTALL_COMMAND="~/dotfiles/install.sh"
-```
-
-### SSH 認証
-
-コンテナ内から GitHub に SSH で接続したい場合は、以下のステップに従う。
-
-1. SSH 鍵を作成し、それを GitHub アカウントに追加する。
-2. Docker ホスト上で SSH Agent を有効化する・
-3. 鍵を SSH Agent に追加する。
-4. VS Code によって自動的に SSH Agent のソケットがコンテナにマウントされ、コンテナ内から鍵が使えるようになる。
-
-### ワークスペースのパス
-
-デフォルトでは、このフォルダの親フォルダがコンテナの `/home/rstudio/project` にマウントされる。
-`.env` ファイルを編集することにより、マウント元とマウント先をそれぞれ変数 `LOCAL_WORKSPACE_FOLDER` と変数 `CONTAINER_WORKSPACE_FOLDER` で変更できる。
-
-例
-
-```
-LOCAL_WORKSPACE_FOLDER=../sub-dir
-CONTAINER_WORKSPACE_FOLDER=/home/rstudio/your-project-name
-```
-
-## 参考資料
-
-Git  
-- [Git - Book](https://git-scm.com/book/ja/v2)
-- [GitHub に SSH で接続する - GitHub Docs](https://docs.github.com/ja/authentication/connecting-to-github-with-ssh)
-
-Docker  
-- [Docker Desktop overview | Docker Documentation](https://docs.docker.com/desktop/)
-- [Compose specification | Docker Documentation](https://docs.docker.com/compose/compose-file/)
-- [docker compose | Docker Documentation](https://docs.docker.com/engine/reference/commandline/compose/)
-- [Networking features in Docker Desktop for Mac | Docker Documentation](https://docs.docker.com/desktop/mac/networking/#ssh-agent-forwarding)
-
-dotfiles  
-- [GitHub does dotfiles - dotfiles.github.io](https://dotfiles.github.io/)
-- [RStudio のオプション設定を dotfiles で管理する - terashim.com](https://terashim.com/posts/rstudio-dotfiles/)
-
-RStudio  
-- [RStudio - RStudio](https://rstudio.com/products/rstudio/#rstudio-server)
-- [RStudio 1.3 Preview: Configuration and Settings | RStudio Blog](https://blog.rstudio.com/2020/02/18/rstudio-1-3-preview-configuration/)
-- [Customizing Keyboard Shortcuts – RStudio Support](https://support.rstudio.com/hc/en-us/articles/206382178-Customizing-Keyboard-Shortcuts)
-- [Version Control with Git and SVN – RStudio Support](https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN)
-- [Rocker Project](https://www.rocker-project.org/)
-
-renv  
-- [Project Environments • renv](https://rstudio.github.io/renv/index.html)
-- [Using renv with Docker • renv](https://rstudio.github.io/renv/articles/docker.html)
-- [Rのパッケージ管理のためのrenvの使い方 - Qiita](https://qiita.com/okiyuki99/items/688a00ca9a58e42e3bfa)
-- [renv と Docker の相互運用パターン - terashim.com](https://terashim.com/posts/renv-docker-patterns/)
-
-Visual Studio Code Remote - Containers  
-- [Developing inside a Container using Visual Studio Code Remote Development](https://code.visualstudio.com/docs/remote/containers)
-- [【R】Windows10のRStudio Desktop使うのをやめてVSCodeからrockerコンテナ立ち上げている話 - Qiita](https://qiita.com/eitsupi/items/ae0f89266b560b4e7096#devcontainerdevcontainerjson)
+もしVS Codeを使わずにSSHを利用したい場合は、
+[.devcontainer/features/ssh-agent/docker-compose.override.example.yml](./features/ssh-agent/docker-compose.override.example.yml)
+をコピーしてプロジェクトのルートディレクトリに
+`docker-compose.override.yml`
+のファイル名で保存する。これによってSSH agentのソケットがコンテナ内にマウントされる。

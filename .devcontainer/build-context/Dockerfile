@@ -14,15 +14,9 @@ RUN \
     libxml2-dev \
     libgit2-dev
 
-# Install renv
-ARG RENV_VERSION="0.16.0"
-COPY install-renv.R /install-renv.R
-RUN Rscript /install-renv.R $RENV_VERSION \
-  && su -c 'mkdir -p /home/rstudio/{.local/share/renv/cache,.renv/library}' rstudio
-
-# Configuration files
-RUN echo 'options("renv.config.autoloader.enabled" = FALSE); \
-  if (file.exists(renv::paths$library()) || file.exists(renv::paths$lockfile())) \
-  { renv::load(); renv::restore(prompt = FALSE) }' \
-  >> ${R_HOME}/etc/Rprofile.site
+# Install renv 0.16.0 from RSPM snapshot
+RUN R -e 'install.packages("renv",repos="https://packagemanager.rstudio.com/cran/__linux__/focal/2022-10-14/")' \
+  && rm -rf /home/rstudio/.config/rstudio \
+  && su -c 'mkdir -p /home/rstudio/{.local/share/renv/cache,.renv/library,.config}' rstudio
+COPY Rprofile.site $R_HOME/etc/Rprofile.site
 COPY --chown=rstudio:rstudio .Renviron /home/rstudio/.Renviron

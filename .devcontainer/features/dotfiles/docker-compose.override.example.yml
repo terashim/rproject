@@ -1,0 +1,15 @@
+# An example docker-compose.override.yml file to enable the dotfiles feature
+services:
+  rstudio:
+    volumes:
+      # 1. mount the dotfiles directory
+      # case a) prepared dotfiles specific to this project
+      - ./.devcontainer/features/dotfiles/dotfiles:/home/rstudio/dotfiles
+      # case b) your own global dotfiles shared with other projects
+      # - /path/to/your/global/dotfiles:/home/rstudio/dotfiles
+      # 2. mount the init script
+      - ./.devcontainer/features/dotfiles/init.d/dotfiles.sh:/etc/cont-init.d/dotfiles.sh
+    environment:
+      # 3. tell the init script the dotfiles path and the install command
+      - DOTFILES_TARGET_PATH=/home/rstudio/dotfiles
+      - DOTFILES_INSTALL_COMMAND=./install.sh

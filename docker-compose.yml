@@ -1,0 +1,12 @@
+services:
+  rstudio:
+    build:
+      context: ./.devcontainer/build-context
+    ports:
+      - "8787:8787"
+    environment:
+      - PASSWORD=password
+      - DISABLE_AUTH=true
+    volumes:
+      - .:/home/rstudio/project
+      - ${RENV_PATHS_CACHE_HOST:-./.devcontainer/features/renv/cache}:/home/rstudio/.local/share/renv/cache

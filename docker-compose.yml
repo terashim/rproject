@@ -1,12 +1,17 @@
 services:
   rstudio:
     build:
-      context: ./.devcontainer/build-context
+      context: ./.devcontainer/docker
     ports:
       - "8787:8787"
     environment:
       - PASSWORD=password
       - DISABLE_AUTH=true
+      - RENV_PATHS_ROOT=/home/rstudio/.cache/R/renv
+      - RENV_PATHS_LIBRARY_ROOT=/home/rstudio/.cache/R/renv/library
+      - RENV_PATHS_CACHE=/mnt/shared/renv/cache
+      - RENV_BOOTSTRAP_TARBALL=/opt/renv_1.0.0.tar.gz
+      - RENV_CONFIG_SANDBOX_ENABLED=FALSE
     volumes:
       - .:/home/rstudio/project
-      - ${RENV_PATHS_CACHE_HOST:-./.devcontainer/features/renv/cache}:/home/rstudio/.local/share/renv/cache
+      - ${RENV_PATHS_CACHE_HOST:-./.devcontainer/features/renv/cache}:/mnt/shared/renv/cache

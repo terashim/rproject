@@ -1,3 +1,9 @@
+# v1.4.0 (2023/08/12)
+
+- Rのバージョンを4.3.1に変更
+- renvのバージョンを1.0.0に変更
+- RENV_BOOTSTRAP_TARBALLを使用するよう修正
+
 # v1.3.0 (2022/11/5)
 
 - dotfilesとSSH agentの設定は必要ならdocker-compose.override.ymlで行うよう変更

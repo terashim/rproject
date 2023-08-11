@@ -12,8 +12,8 @@
 
 1. このリポジトリをクローンする。
 2. [`.env.example`](../.env.example) をこのプロジェクトのルートディレクトリの `.env` にコピーする。
-3. Dockerホストマシン上にrenvのグローバルキャッシュディレクトリ（例: `~/.local/share/renv/cache`）を作成する。
-4. Edit `.env` file to set the environment variable `RENV_PATHS_CACHE_HOST` to the renv global cache path.
+3. Dockerホストマシン上にrenvのグローバルキャッシュディレクトリ（例: `~/.cache/R/renv/cache`）を作成する。
+4. `.env` ファイルを編集して環境変数 `RENV_PATHS_CACHE_HOST` をこのキャッシュのパスに設定する。
 
 ### 起動と終了
 
@@ -39,7 +39,7 @@ VS Code の代わりに
 - [`renv::snapshot()`](https://rstudio.github.io/renv/reference/snapshot.html) を呼び出して [`renv.lock`](../renv.lock) ファイルを更新することにより、インストールされたパッケージを記録する。
 - [`renv::restore()`](https://rstudio.github.io/renv/reference/restore.html) を呼び出すことで [`renv.lock`](../renv.lock) からパッケージを復元する。
 
-必要なら [`renv/settings.dcf`](../renv/settings.dcf) を編集してスナップショットタイプを変更することもできる。スナップショットタイプについてより詳しくは
+必要なら [`renv/settings.json`](../renv/settings.json) を編集してスナップショットタイプを変更することもできる。スナップショットタイプについてより詳しくは
 <https://rstudio.github.io/renv/reference/snapshot.html#snapshot-type>
 を参照のこと。
 

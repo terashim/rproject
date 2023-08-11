@@ -12,7 +12,7 @@
 
 1. Clone this repository.
 2. Copy [`.env.example`](../.env.example) to `.env` file in the project root directory
-3. Make a renv global cache directory (e.g. `~/.local/share/renv/cache`) in the Docker host machine.
+3. Make a renv global cache directory (e.g. `~/.cache/R/renv/cache`) in the Docker host machine.
 4. Edit `.env` file to set the environment variable `RENV_PATHS_CACHE_HOST` to the renv global cache path.
 
 ### Start and Stop
@@ -39,7 +39,7 @@ In this mode, you can manage packages in the following way:
 - Update [`renv.lock`](../renv.lock) file by calling [`renv::snapshot()`](https://rstudio.github.io/renv/reference/snapshot.html) to record the installed packages.
 - Restore the packages from the [`renv.lock`](../renv.lock) file by calling [`renv::restore()`](https://rstudio.github.io/renv/reference/restore.html)
 
-You can change the snapshot type by editing [`renv/settings.dcf`](../renv/settings.dcf) file if you need.
+You can change the snapshot type by editing [`renv/settings.json`](../renv/settings.json) file if you need.
 For more details about snapshot types, see <https://rstudio.github.io/renv/reference/snapshot.html#snapshot-type>.
 
 ### dotfiles

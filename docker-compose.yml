@@ -10,7 +10,7 @@ services:
       - RENV_PATHS_ROOT=/home/rstudio/.cache/R/renv
       - RENV_PATHS_LIBRARY_ROOT=/home/rstudio/.cache/R/renv/library
       - RENV_PATHS_CACHE=/mnt/shared/renv/cache
-      - RENV_BOOTSTRAP_TARBALL=/opt/renv_1.0.0.tar.gz
+      - RENV_BOOTSTRAP_TARBALL=/opt/renv_1.0.2.tar.gz
       - RENV_CONFIG_SANDBOX_ENABLED=FALSE
     volumes:
       - .:/home/rstudio/project

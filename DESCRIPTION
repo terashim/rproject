@@ -1,4 +1,4 @@
 Type: project
 Description: My project.
 Depends:
-    renv (== 1.0.0)
+    renv (== 1.0.2)

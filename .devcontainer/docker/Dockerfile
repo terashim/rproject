@@ -13,10 +13,10 @@ RUN \
     libxml2-dev \
     libgit2-dev
 
-# Download renv 1.0.2 tarball
-ARG RENV_BOOTSTRAP_TARBALL=/opt/renv_1.0.2.tar.gz
+# Download renv 1.0.3 tarball
+ARG RENV_BOOTSTRAP_TARBALL=/opt/renv_1.0.3.tar.gz
 RUN wget -O $RENV_BOOTSTRAP_TARBALL \
-  'https://packagemanager.posit.co/cran/__linux__/jammy/latest/src/contrib/renv_1.0.2.tar.gz?r_version=4.3&arch=x86_64' \
+  'https://packagemanager.posit.co/cran/__linux__/jammy/2023-10-04/src/contrib/renv_1.0.3.tar.gz?r_version=4.3&arch=x86_64' \
   && chown rstudio:rstudio $RENV_BOOTSTRAP_TARBALL \
   && rm -rf /home/rstudio/.config/rstudio \
   && su -c 'mkdir -p /home/rstudio/{.cache/R/renv/library,.config,.local/share}' rstudio
